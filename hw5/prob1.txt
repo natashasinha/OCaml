@@ -1,0 +1,62 @@
+Note: Your work will be most likely be viewed using an editor. For this
+reason DO NOT assume any special formatting abilities will be at work
+when it is viewed. IN PARTICULAR, PUT IN LINE BREAKS AT REASONABLE
+PLACES AND DO NOT USE TABS.
+
+
+Solution to Problem 1
+=====================
+
+The definition of the Fibonnaci function:
+
+    let fib n =
+      let rec fib_aux n m f s =
+        if (n = m) then f
+        else fib_aux n (m+1) s (f+s)
+      in fib_aux n 1 1 1
+
+
+The property we want to show that fib satisfies
+
+    For n greater than or equal to 1, (fib n) evaluates to the nth
+    Fibonnaci number.
+
+
+
+Solution to Part a
+-------------------
+
+P(n): fib_aux returns the Fibonacci of n provided f is the Fibonacci of m and s is the Fibonacco of (m+1), and m<=n.
+
+
+Solution to Part b
+------------------
+
+Base Case: P(0)
+When n=m, we get n-m=0. Using the definition of fib_aux, we can see that it is evaluated to f,
+thus returning the mth fibonacci number. This proves the base case because m=n.
+
+- when n>m then n-m=1
+- n-m = k+1 for k>=0
+
+Inductive Step: Assume P(k) for all n fib_aux n m f s when n-m>=0. To show P(k+1)
+for all n in fib_aux, when n-m = k-1 and n>m in both cases.
+
+Using the definition of fib_aux we can see that in the first iteration of the function it returns
+fib_aux n m+1 s f+s, so when it increments our m, we find that the relationship between n, m, and k
+becomes n-(m-1)=k+1, or n-m=k. We can then use the inductive hypothesis to prove that this will
+hold and return the n-1 fibonacci number + the n-2 fibonacci number, thus proving P(k+1).
+
+
+Solution to Part c
+------------------
+
+Using the preset values of 1 for the variables m, f, and s, we can see
+that
+Case 1: n=1 returns 1
+Case 2: n=2 returns 1
+Case 3: n>2 simplifies to fib(n-1) + fib(n-2). By the induction hypothesis
+we know that fib(n-1) evaluates to fib_aux(n-1) and fib(n-2) evaluates
+to fib_aux(n-2).
+
+Hence fib(n) evaluates to fib_aux(n-1) + fib_aux(n-2), and therefore P(n) holds.
