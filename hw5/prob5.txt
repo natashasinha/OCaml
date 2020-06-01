@@ -1,0 +1,65 @@
+SOLUTION TO PROBLEM 5
+
+Note: Your work will be most likely be viewed using an editor. For this
+reason DO NOT assume any special formatting abilities will be at work
+when it is viewed. IN PARTICULAR, PUT IN LINE BREAKS AT REASONABLE
+PLACES AND DO NOT USE TABS.
+
+
+The type declaration and function definitions relevant to this problem
+
+type 'a btree =
+  | Empty
+  | Node of 'a * 'a btree * 'a btree
+
+let rec insert t i =
+   match t with
+   | Empty -> Node (i,Empty,Empty)
+   | Node (i',l,r) ->
+        if (i < i') then Node (i',insert l i,r)
+        else Node (i',l,insert r i)
+
+let rec find t i =
+   match t with
+   | Empty -> false
+   | Node (i',l,r) ->
+       if (i = i') then true
+       else if (i < i') then find l i
+            else find r i
+
+
+The property that needs to be proven for this problem:
+
+  For all t of type ('a btree),
+    for all x of type 'a, for all t' of type ('a btree), for all y of type 'a,
+        if (insert t x) evaluates to t' and (find t' y) evaluates to true
+        then y = x or (find t y) evaluates to true.
+
+
+Base Case: P(Empty) - for all x in 'a, if insert(Empty x) evaluates to t' then find (find t' x')
+evaluates to true for any data item in x' of type 'a, only if x' is x or
+(find Empty x') evaluates to true.
+Observing that t' = Node(x, Empty, Empty) we can see that it would only be true
+if x' is x since (find Empty x') always evaluates to false.
+
+Inductive Step:
+We can say that t is of the form Node(i,l,r) and therefore assume P(l) and P(r) to hold.
+In order to show P(t) which is for all x in 'a, if insert (t x) evaluates to t', then (find t' x')
+evaluates to true for any data item x' of type 'a only if x' is x or (find t x') evaluates to true.
+
+Trivially we can see that if x is x' then (find t' x').
+In regard to i not being x we have two subcases.
+i<x: using the function definition, we insert x into l so that t' = Node(i,l',r) where l' = (insert l x).
+By induction we then see that (find l' x') evaluates to true for any data item of
+type 'a only if x' is x or (find l x') evaluates to true. Therefore if x' is x then (find t' x) is also
+true and if (find l x') is true then (find t' x) is also true since l is the subtree.
+ 
+i>=x: this has the same logic as the previous case, but now using the function definition we instead
+insert x into r, giving us t' = Node(i,l,r') where r'= (insert r x). By induction we can see
+that (find r' x') evaluates to true for any data item x' of type 'a only if x' is x or (find l x')
+evaluates to true. Therefore if x' is x then (find t' x) is also true and if (find r x') is true
+then (find t' x) is also true because r is its subtree.
+
+Thus proving our property P(t).
+
+
