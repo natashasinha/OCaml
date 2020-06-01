@@ -1,0 +1,75 @@
+Note: Your work will be most likely be viewed using an editor. For this
+reason DO NOT assume any special formatting abilities will be at work
+when it is viewed. IN PARTICULAR, PUT IN LINE BREAKS AT REASONABLE
+PLACES AND DO NOT USE TABS.
+
+
+Solution to Problem 4
+=====================
+
+The definitions of the reverse and length functions:
+
+let rec rev lst1 lst2 =
+   match lst1 with
+   |  [] -> lst2
+   |  (h::t) -> rev t (h::lst2)
+
+let reverse lst = in rev lst []
+
+let rec length lst =
+   match lst with
+   | [] -> 0
+   | (h::t) -> (length t) + 1
+
+
+Solution to Part (a)
+--------------------
+
+P(lst1): for any lst2 of type 'a list, (length(rev lst1 lst2)) evaluates to
+(length lst1 + length lst2)
+
+
+Solution to Part (b)
+--------------------
+
+Base Case: P([])
+- Let lst2 be arbitrary
+We want to show that for any lst2, (length rev [] lst2) will evaluate to (length []) + (length lst2) which
+can be simplified to (length lst2).
+
+We can begin by looking at the left hand side. We begin with
+(length(rev [] lst2)). This can be simplified to length(rev []) + length lst2.
+We continue simplifying further to get: length(rev []) + length lst2
+                                        = (length []) + (length lst2)
+					= 0 + (length lst2)
+					= length lst2
+We can then look at the right hand side.
+(length []) + (length lst2) = 0 + (length lst2)
+                            = length lst2
+
+Thus, we can see that the P([]) holds.
+
+Inductive Step: Assume P(lst1) for lst2 in 'a list, length(rev lst1 lst2) then evaluates
+to (length x'::lst1) + (length lst2).
+
+We choose an x' in 'a to show that the property holds.
+We can begin by looking at the first function call - length(rev lst1 lst2). Using what we
+have proven  about rev, we can simplify (length(rev x'::lst1 lst2)) to (length(lst^R + x'::lst2)).
+We can then rearrange this to get length(x'::(lst^R +lst2)).Using the function definition we
+can further simplify this to (length(lst1^R + lst2)+1) = (length lst1^R) + (length lst2) + 1
+Next, we look at the second statement - (length x'::lst1 + length lst2). This evaluates to
+(length lst1^R) + 1 + (length lst2).
+
+Therefore, using the induction hypothesis we can see that both statements are equivalent
+and the property holds.
+
+Solution to Part (c)
+--------------------
+The property for reverse and length to be proved:
+   for all lists l, (length (reverse l)) = (length l).
+
+
+For l in 'a list, length(reverse l) evaluates to whatever length(rev l []) evaluates to
+and using the property we just proved, we can see that if l is [] then it would return
+(length []) which is 0, otherwise it would evaluate to length (l^R + []) which would always evaluate to
+length (l^R) which is the length of l. 
