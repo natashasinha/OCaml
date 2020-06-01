@@ -1,0 +1,79 @@
+Note: Your work will be most likely be viewed using an editor. For this
+reason DO NOT assume any special formatting abilities will be at work
+when it is viewed. IN PARTICULAR, PUT IN LINE BREAKS AT REASONABLE
+PLACES AND DO NOT USE TABS.
+
+
+Solution to Problem 2
+=====================
+
+The definitions of the nat type and associated functions:
+
+type nat = Zero | Succ of nat
+
+let rec plusNat x y =
+   match x with
+   | Zero -> y
+   | (Succ x') -> Succ (plusNat x' y)
+
+let rec multNat x y =
+   match x with
+   | Zero -> Zero
+   | (Succ x') -> plusNat y (multNat x' y)
+
+let rec toInt n =
+   match n with
+   | Zero -> 0
+   | (Succ n') -> toInt n' + 1
+
+
+The property that was proved in the video-taped lectures:
+
+    for all n1 of type nat,
+      for all n2 of type nat, toInt (plusNat n1 n2) = (toInt n1) + (toInt n2)
+
+The property that we want to prove in this problem:
+
+   for all n1 of type nat,
+      for all n2 of type nat, toInt (multNat n1 n2) = (toInt n1) * (toInt n2)
+
+
+The proof of the property
+-------------------------
+
+P(n1): for all n2 of type nat,
+            toInt(multNat n1 n2) = (toInt n1)*(toInt n2)
+
+Base Case: P(Zero)
+
+Let n2 be arbitrary. We can begin by looking at the left hand side.
+
+toInt(multNat zero n2) = (toInt Zero) * (toInt n2)
+                       = 0 * (toInt n2)
+		       = 0
+
+We can then look at the right hand side.
+(toInt Zero) * (toInt n2) = 0 * (toInt n2)
+                          = 0
+
+We can see that the left hand side and right hand side have the same evaluation properties
+and since n2 is arbitrary, this argument holds for any n2 and therefore P(Zero) holds.
+
+Inductive Step: Assume P(n1) holds, we want to show that P(Succ n1') holds. We then get that
+for all n2, and n1' of type Succ, toInt(multNat (Succ n1') n2) = (toInt (Succ n1'))*(toInt n2). Let n2
+be arbitrary.
+
+We can begin by looking at the left hand side of the statement shown above - toInt(multNat (Succ n1') n2).
+Using what we know about the plusNat function and the way it handles inputs of type Succ, we can then 
+simplify the statement to toInt(plusNat n2(multNat n1' n2)). In this, we can see that plusNat n2(multNat n1' n2)
+is identical to the output from the plusNat function - plusNat y (multNat x' y). This allows us to further 
+simplify the expression to toInt(n2) + toInt(multNat n1' n2). Using the inductive hypothesis, we can then rewrite
+this expression to be toInt(n2) + toInt(n1') * toInt(n2).
+
+We can then look at the right hand side. We begin with (toInt(Succ n1'))*(toInt n2). We can simplify this expression
+to be Succ(toInt n1')*(toInt n2). Looking at the toInt function, specifically the expression toInt n' + 1,
+we can see that (toInt(Succ n1')) evaluates to (1 + (toInt n1'))*(toInt n2). Next, we can then distribute the (toInt n2)
+throughout the entire (1+(toInt n1')) expression, which results in (toInt n2) + (toInt n1') * (toInt n2).
+
+Since the left hand side and the right hand side have the same evaluation properties, and n2 is arbitrary, generalization
+gives us P(Succ n1').
