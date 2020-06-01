@@ -1,0 +1,59 @@
+Note: Your work will be most likely be viewed using an editor. For this
+reason DO NOT assume any special formatting abilities will be at work
+when it is viewed. IN PARTICULAR, PUT IN LINE BREAKS AT REASONABLE
+PLACES AND DO NOT USE TABS.
+
+Solution to Problem 3
+=====================
+
+The definition of the reverse function:
+
+let rec rev lst1 lst2 =
+   match lst1 with
+   |  [] -> lst2
+   |  (h::t) -> rev t (h::lst2)
+
+let reverse lst = in rev lst []
+
+
+Solution to Part (a)
+--------------------
+
+P(lst1): For all lst2 in 'a list (rev lst1 lst2) = lst1^R + lst2
+
+
+Solution to Part (b)
+--------------------
+
+Base Case: P([]) - For all lst2 in 'a list (rev [] lst2 = []^R + lst2)
+
+We can start by looking at the left hand side. Using the definition of rev, 
+we can see that rev [] lst2 evaluates to whatever lst2 evaluates to.
+We can then look at the right hand side. The reverse of an empty list is also 
+an empty list, so appending the empty list with lst2 would simplify to whatever lst2 evaluates to.
+
+Since both the left hand side and the right hand side have the same evaluation 
+properties, we can conclude that P([]) holds.
+
+Inductive Step: Assume P(lst1), then for all lst2 in 'a list, rev lst1' lst2 = lst1'^R + lst2
+
+Let lst2 be arbitrary. We can choose an x' in a' to show this property.
+We can begin by looking at the left hand side. Using the definition of rev, we can 
+simplify rev lst1' lst2 to rev lst1'(x'::lst2). Using the induction hypothesis. We can 
+see that this evaluates to (lst1'^R + x'::lst2). We can look at the right hand side next.
+We can simplify (x'::lst1')^R + lst2 to lst1'^R + (x'::lst2), which is also the end result 
+of the left hand side simplification.
+
+Thus the property holds.
+
+
+Solution to Part (c)
+--------------------
+
+The property for reverse to be proven:
+     For all lists l, (reverse l) evaluates to l^R.
+
+For l in 'a list, reverse l evaluates to whatever rev l [] evaluates to, 
+and using the property we just proved, we can see that if l is [], it would 
+return [], otherwise it would always evaluate to (l^R + []) which is just always 
+l^R (the reverse of l). 
